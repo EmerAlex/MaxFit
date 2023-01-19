@@ -1,0 +1,218 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row m-4">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header" style="text-align:center">
+                <div>
+                    <button class="btn btn-success btn-sm" onclick="ShowModal(0)">Nuevo Usuario</button>
+                </div>
+                <div>
+                    <button class="btn btn-danger btn-sm" onclick="GoRecord()">Historial</button>
+                </div>
+                
+            </div>
+            <div class="card-body">
+
+                <table id="tbuser" class="table">
+                    <thead>
+                        <tr>
+                            <th>Nro Documento</th>
+                            <th>Nombre Completo</th>
+                            <th>Fecha de Incripción</th>
+                            <th>Fecha de Vencimiento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="UserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Usuario</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" id="divIdentity">
+                    <label class="form-label">Identificación</label>
+                    <input type="text" name="Identity" class="form-control" id="Identity">
+                </div>
+                <div class="form-group" id="divIdentityType">
+                    <label class="form-label">Tipo Identificación</label>
+                    <select class="form-select" name="IdentityType" id="IdentityType">
+                        <option value="CC">Cédula de Ciudadania</option>
+                        <option value="TI">Targeta de Identidad</option>
+                    </select>
+                </div>
+                <div class="form-group" id="divName">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" name="Name" class="form-control" id="Name">
+                </div>
+                <div class="form-group" id="divSubscription">
+                    <label class="form-label">Tipo Usuario</label>
+                    <select class="form-select" name="Subscription" id="Subscription">
+                        <option value="N">Nuevo</option>
+                        <option value="O">Antiguo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="HideModal()">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSave" onclick="SaveUser()" disabled>Guardar</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate" onclick="UpdateUser()" disabled>Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script>
+        var table_user;
+
+        $(document).ready(function () {
+            table_user = $('#tbuser').DataTable({
+                "ajax": {
+                    "url": "@Url.Action("FindAllUsers","User")",
+                    "type": "GET",
+                    "datatype": "json"
+
+                },
+                "columns": [
+                    { "data": "Identity"},
+                    { "data": "Name" },
+                    { "data": "DateInscription" },
+                    { "data": "DateExpired" },
+                    {
+                        "data": "Identity", "render": function (data) {
+
+                            return "<button class='btn btn-primary' type='button' onclick='ShowModal(" + data +")'>Renovar<i class='fas fa-pen'></i></button>"
+
+                        }
+                    }
+
+                ]
+
+
+                });
+        });
+        function HideModal() {
+            $("#UserModal").modal('hide')
+
+        }
+        function ShowModal($Document) {
+
+            if($Document == 0){
+                $("#Identity").prop('disabled',false);
+                $("#Identity").val('');
+                $("#divIdentity").show();
+                $("#divIdentityType").show();
+                $("#divName").show();
+                $("#divSubscription").show();
+                $("#btnUpdate").prop('disabled',true);
+                $("#btnUpdate").hide();
+                $("#btnSave").prop('disabled',false);
+                $("#btnSave").show();
+                $("#UserModal").modal('show')
+            }else{
+                $("#Identity").prop('disabled',true);
+                $("#Identity").val($Document);
+                $("#divIdentityType").hide();
+                $("#divName").hide();
+                $("#divSubscription").show();
+                $("#btnSave").prop('disabled',true);
+                $("#btnSave").hide();
+                $("#btnUpdate").prop('disabled',false);
+                $("#btnUpdate").show();
+                $("#UserModal").modal('show')
+            }
+
+        }
+        
+
+        function GoRecord() {
+            console.log("asdasd");
+            @Url.Action("Record", "MaxFit");
+        }
+
+        function SaveUser() {
+            var $data = {
+                userSubmit:{
+
+                    Identity: $("#Identity").val(),
+                    IdentityType: $("#IdentityType").val(),
+                    Name: $("#Name").val(),
+                    Subscription: $("#Subscription").val()
+
+                }
+
+            }
+            jQuery.ajax({
+                url: "@Url.Action("SaveUser","User")",
+                type: "POST",
+                data: JSON.stringify($data),
+                datatype: "json",
+                contentType: "application/json; charset-utf-8",
+                success: function (data) {
+                    if (data.result) {
+                        table_user.ajax.reload();
+                        $("#UserModal").modal('hide');
+                    } else {
+                        alert("No se pudo guardar de forma correcta el usuario")
+                    }
+                }
+
+                })
+
+        }
+
+        function UpdateUser() {
+            var $data = {
+                userSubmit:{
+
+                    Identity: $("#Identity").val(),
+                    Subscription: $("#Subscription").val()
+
+                }
+
+            }
+            console.log($data)
+            jQuery.ajax({
+
+                url: "@Url.Action("UpdateUser","User")",
+                type: "POST",
+                data: JSON.stringify($data),
+                datatype: "json",
+                contentType: "application/json; charset-utf-8",
+                success: function (data) {
+                    if (data.result) {
+                        table_user.ajax.reload();
+                        $("#UserModal").modal('hide');
+                    } else {
+                        alert("No se pudo guardar de forma correcta el usuario")
+                    }
+                }
+
+                })
+
+
+        }
+
+    </script>
+
+}
+
+

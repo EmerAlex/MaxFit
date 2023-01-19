@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row m-4">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header" style="text-align:center">
+                <div class="container">
+                    <div class='col-md-5'>
+                        <div class="form-group">
+                            <label class="form-label">Fecha Inicio</label>
+                            <div class='input-group date' id='dateinitial'>                                
+                                <input type='text' class="form-control" id='inputdateinitial' />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-5'>
+                        <div class="form-group">
+                            <label class="form-label">Fecha Final</label>
+                            <div class='input-group date' id='datefinal'>
+                                <input type='text' class="form-control" id='inputdatefinal' />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-2'>
+                        <label class="form-label"></label>
+                        <div>
+                            <button class="btn btn-danger btn-sm" onclick="FindRecords()">Buscar</button>
+                        </div>                        
+                    </div>                                      
+                </div>
+                <div class="container" style="text-align:center">
+                    <div class="form-group">
+                        <label class="form-label">Valor Total</label>
+                        <input type="text" name="Name" class="form-control" id="result" style="display:inline-block; width:30%" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <table id="tbRecord" class="table">
+                    <thead>
+                        <tr>
+                            <th>Nro Documento</th>
+                            <th>Fecha de Incripción</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+@section scripts{
+
+    <script>
+        var table_user;
+
+        $(document).ready(function () {
+            table_user = $('#tbRecord').DataTable({
+                "ajax": {
+                    "url": "@Url.Action("FindAllRecords","Record")",
+                    "type": "GET",
+                    "datatype": "json"
+
+                },
+                "columns": [
+                    { "data": "Document"},
+                    { "data": "Date" },
+                    { "data": "Price" }
+
+                ]
+
+
+                });
+        });
+
+        function FindRecords() {
+            var $data = {
+                recordSubmit: {
+                        InitialDate: $("#inputdateinitial").val(),
+                        FinlaDate: $("#inputdatefinal").val()
+                    }
+
+            }
+            console.log(JSON.stringify($data))
+            jQuery.ajax({
+                url: "@Url.Action("FindRecords", "Record")",
+                type: "POST",
+                data: JSON.stringify($data),
+                datatype: "json",
+                contentType: "application/json; charset-utf-8",
+                success: function (data) {
+                    table_user.clear();
+                    table_user.rows.add(data.result.Records);
+                    table_user.draw();
+                    $("#result").val(data.result.Total);
+                }
+
+                })
+
+
+        }
+
+
+        $(function () {
+            $('#dateinitial').datetimepicker();
+            $('#datefinal').datetimepicker({
+                useCurrent: false //Important! See issue #1075
+            });
+            $("#dateinitial").on("dp.change", function (e) {
+                $('#datefinal').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datefinal").on("dp.change", function (e) {
+                $('#dateinitial').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+
+    </script>
+
+
+}
+
+
