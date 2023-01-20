@@ -2,6 +2,7 @@
 using MaxFit.Models.Service;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace MaxFit.Controllers
 {
@@ -19,7 +20,10 @@ namespace MaxFit.Controllers
             if (!(userDto.Identity == null || userDto.Identity.Trim() == ""))
             {
                 userDto.UserQuery = _userService.FindUser(userDto.Identity);
-                
+                if (userDto.UserQuery == null)
+                {
+                    return RedirectToAction("FindUser","User");
+                }
             }
             return View(userDto);
         }
@@ -50,6 +54,12 @@ namespace MaxFit.Controllers
         {
 
             return Json(new { data = _userService.FindAll().ToList() }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("FindUser", "User");
         }
 
     }

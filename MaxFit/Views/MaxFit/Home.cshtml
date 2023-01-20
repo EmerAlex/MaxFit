@@ -3,18 +3,53 @@
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/Content/css/home.css" rel="stylesheet" />
+<form id="UserModal" style=" padding : 10px 30px 10px 30px ">
+
+    <div class="container" style="width: 50% ">
+        <div class="form-group" id="divIdentity" style="align-content:center">
+            <label class="form-label" style="width: 30%"><b>Identificación</b></label>
+            <input type="text" name="Identity" class="form-control" style="width:50%" id="Identity">
+        </div>
+        <div class="form-group" id="divIdentityType">
+            <label class="form-label" style="width: 30%" ><b>Tipo de Identificación</b></label>           
+                <select class="form-select" name="IdentityType" style="width:50%" id="IdentityType">
+                    <option value="CC">Cédula de Ciudadania</option>
+                    <option value="TI">Targeta de Identidad</option>
+                </select>           
+        </div>
+        <div class="form-group" id="divName">
+            <label class="form-label" style="width: 30%"><b>Nombre</b></label>
+            <input type="text" name="Name" class="form-control" style="width:50%" id="Name">
+        </div>
+        <div class="form-group" id="divSubscription">
+            <label class="form-label" style="width: 30%"><b>Tipo de Usuario</b></label> 
+               <select class="form-select" name="Subscription" style="width:50%" id="Subscription">
+                    <option value="N">Nuevo</option>
+                    <option value="O">Antiguo</option>
+                </select>
+            
+        </div>
+        <div class="align-middle" style="text-align:center">
+            <button type="button" class="btn btn-secondary" onclick="HideModal()">Close</button>
+            <button type="button" class="btn btn-primary" id="btnSave" onclick="SaveUser()" disabled>Guardar</button>
+            <button type="button" class="btn btn-primary" id="btnUpdate" onclick="UpdateUser()" disabled>Actualizar</button>
+        </div>
+    </div>
+    
+
+</form>
 
 <div class="row m-4">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header" style="text-align:center">
-                <div>
+                <div style="display:inline-block">
                     <button class="btn btn-success btn-sm" onclick="ShowModal(0)">Nuevo Usuario</button>
                 </div>
-                <div>
-                    <button class="btn btn-danger btn-sm" onclick="GoRecord()">Historial</button>
+                <div style="display:inline-block">
+                    <a class="btn btn-danger btn-sm" href="@Url.Action("Record","MaxFit")">Historial</a>
                 </div>
-                
             </div>
             <div class="card-body">
 
@@ -38,44 +73,6 @@
 
 </div>
 
-<div class="modal fade" id="UserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Usuario</h5>
-            </div>
-            <div class="modal-body">
-                <div class="form-group" id="divIdentity">
-                    <label class="form-label">Identificación</label>
-                    <input type="text" name="Identity" class="form-control" id="Identity">
-                </div>
-                <div class="form-group" id="divIdentityType">
-                    <label class="form-label">Tipo Identificación</label>
-                    <select class="form-select" name="IdentityType" id="IdentityType">
-                        <option value="CC">Cédula de Ciudadania</option>
-                        <option value="TI">Targeta de Identidad</option>
-                    </select>
-                </div>
-                <div class="form-group" id="divName">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" name="Name" class="form-control" id="Name">
-                </div>
-                <div class="form-group" id="divSubscription">
-                    <label class="form-label">Tipo Usuario</label>
-                    <select class="form-select" name="Subscription" id="Subscription">
-                        <option value="N">Nuevo</option>
-                        <option value="O">Antiguo</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="HideModal()">Close</button>
-                <button type="button" class="btn btn-primary" id="btnSave" onclick="SaveUser()" disabled>Guardar</button>
-                <button type="button" class="btn btn-primary" id="btnUpdate" onclick="UpdateUser()" disabled>Actualizar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 @section scripts{
@@ -84,6 +81,7 @@
         var table_user;
 
         $(document).ready(function () {
+            $("#UserModal").hide();
             table_user = $('#tbuser').DataTable({
                 "ajax": {
                     "url": "@Url.Action("FindAllUsers","User")",
@@ -109,8 +107,9 @@
 
                 });
         });
+
         function HideModal() {
-            $("#UserModal").modal('hide')
+            $("#UserModal").hide();
 
         }
         function ShowModal($Document) {
@@ -126,7 +125,7 @@
                 $("#btnUpdate").hide();
                 $("#btnSave").prop('disabled',false);
                 $("#btnSave").show();
-                $("#UserModal").modal('show')
+                $("#UserModal").show();
             }else{
                 $("#Identity").prop('disabled',true);
                 $("#Identity").val($Document);
@@ -137,16 +136,11 @@
                 $("#btnSave").hide();
                 $("#btnUpdate").prop('disabled',false);
                 $("#btnUpdate").show();
-                $("#UserModal").modal('show')
+                $("#UserModal").show();
             }
 
         }
-        
 
-        function GoRecord() {
-            console.log("asdasd");
-            @Url.Action("Record", "MaxFit");
-        }
 
         function SaveUser() {
             var $data = {
@@ -169,7 +163,7 @@
                 success: function (data) {
                     if (data.result) {
                         table_user.ajax.reload();
-                        $("#UserModal").modal('hide');
+                        $("#UserModal").hide();
                     } else {
                         alert("No se pudo guardar de forma correcta el usuario")
                     }
@@ -200,7 +194,7 @@
                 success: function (data) {
                     if (data.result) {
                         table_user.ajax.reload();
-                        $("#UserModal").modal('hide');
+                        $("#UserModal").hide();
                     } else {
                         alert("No se pudo guardar de forma correcta el usuario")
                     }

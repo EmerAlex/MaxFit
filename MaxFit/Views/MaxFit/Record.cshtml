@@ -7,40 +7,27 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header" style="text-align:center">
-                <div class="container">
-                    <div class='col-md-5'>
-                        <div class="form-group">
-                            <label class="form-label">Fecha Inicio</label>
-                            <div class='input-group date' id='dateinitial'>                                
-                                <input type='text' class="form-control" id='inputdateinitial' />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='col-md-5'>
-                        <div class="form-group">
-                            <label class="form-label">Fecha Final</label>
-                            <div class='input-group date' id='datefinal'>
-                                <input type='text' class="form-control" id='inputdatefinal' />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='col-md-2'>
-                        <label class="form-label"></label>
-                        <div>
-                            <button class="btn btn-danger btn-sm" onclick="FindRecords()">Buscar</button>
-                        </div>                        
-                    </div>                                      
+                <div style="text-align:initial">
+                    <a class="btn btn-success btn-sm" href="@Url.Action("Home","MaxFit")">Tabal de Usuario</a>
                 </div>
-                <div class="container" style="text-align:center">
+                <div class="container">
+                    <div style="display:inline-block">
+                        <label class="form-label"><b>Fecha Inicio</b></label>
+                        <input type="datetime-local" class="form-control" id='inputdateinitial' />
+                    </div>
+                    <div style="display:inline-block">
+                        <label class="form-label"><b>Fecha Final</b></label>
+                        <input type="datetime-local" class="form-control" id='inputdatefinal' />
+                    </div>
+                    <div style="display:inline-block">
+                        <label class="form-label"></label>
+                        <button class="btn btn-danger btn-sm" onclick="FindRecords()">Buscar</button>
+                    </div>                    
+                </div>
+                <div class="container" style="text-align:center; margin-top:10px">
                     <div class="form-group">
-                        <label class="form-label">Valor Total</label>
-                        <input type="text" name="Name" class="form-control" id="result" style="display:inline-block; width:30%" disabled>
+                        <label class="form-label"><b>Valor Total: </b></label>
+                        <input type="number" name="Name" class="form-control" id="result" style="display:inline-block; width:20%;text-align:center" disabled>
                     </div>
                 </div>
             </div>

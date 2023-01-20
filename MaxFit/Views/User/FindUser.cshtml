@@ -9,17 +9,17 @@
 
 </head>
 
-<body >
+<body>
     @using (Html.BeginForm("FindUser", "User", FormMethod.Get))
-    { 
-         <div class="text-center" id="divfinduser">
-             <div class="input-group"  id="divinput"> 
-                 <input  id="search" name="Identity" type="search" class="form-control" placeholder="Ingrese el número de documento" required/>
-                 <div class="input-group-append">
-                     <button class="btn btn-outline-secondary" type="submit" id="buttonfind">Buscar</button>
-                 </div>
-                                 
-             </div>
+    {
+        <div class="text-center" id="divfinduser">
+            <div class="input-group" id="divinput">
+                <input id="search" name="Identity" type="search" class="form-control" placeholder="Ingrese el número de documento" required />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="buttonfind">Buscar</button>
+                </div>
+
+            </div>
             @if (Model.Identity != null)
             {
                 <table class="table table-bordered">
@@ -47,4 +47,15 @@
     }
 
 </body>
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#logout").hide();
+        })
+    </script>
+
+
+}
+
 

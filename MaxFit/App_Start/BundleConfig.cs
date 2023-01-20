@@ -44,8 +44,6 @@ namespace MaxFit
                         "~/Scripts/moment.js",
                         "~/Scripts/bootstrap-datetimepicker.js")); 
 
-
-
         }
     }
    

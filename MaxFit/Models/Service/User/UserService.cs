@@ -58,13 +58,13 @@ namespace MaxFit.Models.Service
             {
                 userdto.Identity = user.Identity;
                 userdto.IdentityType = user.Identity;
-                userdto.Name = user.Name;            
+                userdto.Name = user.Name; 
                 userdto.DateExpired = user.DateInscription.AddDays(30);
                
                
             }           
-
-            return userdto;
+            var rs = user.DateInscription.ToString().Equals("1/1/0001 12:00:00 AM") ? null : userdto;
+            return user.DateInscription.ToString().Equals("1/1/0001 12:00:00 AM") ?null:userdto;
         }
 
         public IEnumerable<UserAllQueryDTO> FindAll()
