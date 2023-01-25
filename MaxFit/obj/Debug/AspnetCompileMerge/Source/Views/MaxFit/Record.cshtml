@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row m-4">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header" style="text-align:center">
+                <div style="text-align:initial">
+                    <a class="btn btn-success btn-sm" href="@Url.Action("Home","MaxFit")">Tabal de Usuario</a>
+                </div>
+                <div class="container">
+                    <div style="display:inline-block">
+                        <label class="form-label"><b>Fecha Inicio</b></label>
+                        <input type="datetime-local" class="form-control" id='inputdateinitial' />
+                    </div>
+                    <div style="display:inline-block">
+                        <label class="form-label"><b>Fecha Final</b></label>
+                        <input type="datetime-local" class="form-control" id='inputdatefinal' />
+                    </div>
+                    <div style="display:inline-block">
+                        <label class="form-label"></label>
+                        <button class="btn btn-danger btn-sm" onclick="FindRecords()">Buscar</button>
+                    </div>                    
+                </div>
+                <div class="container" style="text-align:center; margin-top:10px">
+                    <div class="form-group">
+                        <label class="form-label"><b>Valor Total: </b></label>
+                        <input type="number" name="Name" class="form-control" id="result" style="display:inline-block; width:20%;text-align:center" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <table id="tbRecord" class="table">
+                    <thead>
+                        <tr>
+                            <th>Nro Documento</th>
+                            <th>Fecha de Incripción</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+@section scripts{
+
+    <script>
+        var table_user;
+
+        $(document).ready(function () {
+            table_user = $('#tbRecord').DataTable({
+                "ajax": {
+                    "url": "@Url.Action("FindAllRecords","Record")",
+                    "type": "GET",
+                    "datatype": "json"
+
+                },
+                "columns": [
+                    { "data": "Document"},
+                    { "data": "Date" },
+                    { "data": "Price" }
+
+                ]
+
+
+                });
+        });
+
+        function FindRecords() {
+            var $data = {
+                recordSubmit: {
+                        InitialDate: $("#inputdateinitial").val(),
+                        FinlaDate: $("#inputdatefinal").val()
+                    }
+
+            }
+            console.log(JSON.stringify($data))
+            jQuery.ajax({
+                url: "@Url.Action("FindRecords", "Record")",
+                type: "POST",
+                data: JSON.stringify($data),
+                datatype: "json",
+                contentType: "application/json; charset-utf-8",
+                success: function (data) {
+                    table_user.clear();
+                    table_user.rows.add(data.result.Records);
+                    table_user.draw();
+                    $("#result").val(data.result.Total);
+                }
+
+                })
+
+
+        }
+
+
+        $(function () {
+            $('#dateinitial').datetimepicker();
+            $('#datefinal').datetimepicker({
+                useCurrent: false //Important! See issue #1075
+            });
+            $("#dateinitial").on("dp.change", function (e) {
+                $('#datefinal').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datefinal").on("dp.change", function (e) {
+                $('#dateinitial').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+
+    </script>
+
+
+}
+
+

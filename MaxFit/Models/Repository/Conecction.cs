@@ -12,7 +12,7 @@ namespace MaxFit.Models.Repository
 
         public Conecction()
         {
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=maxfit;Uid=root;password=sasa";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=maxfit;Uid=maxfit;password=maxfit1234";
         }
 
         public string getStringConexion()

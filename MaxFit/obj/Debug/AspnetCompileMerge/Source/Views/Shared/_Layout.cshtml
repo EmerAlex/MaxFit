@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaxFit</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Plugin/css")
+    @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <div id="logout" style="text-align:end">
+            <a href="@Url.Action("logOut","User")">Cerrar Sesión</a>
+        </div>
+        <div class="text-center">
+            <img src="~/favicon.ico" class="img-fluid" alt="...">
+            <h1 id="title">Gestión de usuarios</h1>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/Content/Plugin/js")
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

@@ -62,8 +62,8 @@ namespace MaxFit.Models.Service
                 userdto.DateExpired = user.DateInscription.AddDays(30);
                
                
-            }           
-            var rs = user.DateInscription.ToString().Equals("1/1/0001 12:00:00 AM") ? null : userdto;
+            }         
+            
             return user.DateInscription.ToString().Equals("1/1/0001 12:00:00 AM") ?null:userdto;
         }
 
@@ -81,8 +81,8 @@ namespace MaxFit.Models.Service
             return users;
         }
 
-        public bool UpdateUser(UserSubmitDTO userdto)
-        {
+        public bool UpdateUser(UserSubmitDTO userdto){
+
             var user = new User();
 
             user.Identity = userdto.Identity;            

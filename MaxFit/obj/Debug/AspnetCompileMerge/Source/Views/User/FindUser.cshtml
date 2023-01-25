@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "FindUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link href="~/Content/css/finduser.css" rel="stylesheet" />
+    <link href="https://getbootstrap.com/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    @using (Html.BeginForm("FindUser", "User", FormMethod.Get))
+    {
+        <div class="text-center" id="divfinduser">
+            <div class="input-group" id="divinput">
+                <input id="search" name="Identity" type="search" class="form-control" placeholder="Ingrese el número de documento" required />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="buttonfind">Buscar</button>
+                </div>
+
+            </div>
+            @if (Model.Identity != null)
+            {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Identificación</th>
+                            <th>Nombre</th>
+                            <th>Fecha de Vencimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.UserQuery.Identity</td>
+                            <td>@Model.UserQuery.Name</td>
+                            <td>@Model.UserQuery.DateExpired</td>
+                        </tr>
+                    </tbody>
+
+
+                </table>
+            }
+        </div>
+
+
+    }
+
+</body>
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#logout").hide();
+        })
+    </script>
+
+
+}
+
+
