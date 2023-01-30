@@ -109,5 +109,31 @@ namespace MaxFit.Models.Service
         {
             return (userdto.Identity == null || userdto.Subscription == null);
         }
+
+        public IEnumerable<UserAllQueryDTO> FindAllUsersExpired()
+        {
+            List<UserAllQueryDTO> users = new List<UserAllQueryDTO>();
+
+            _userRepository.FindAll().ForEach(us =>
+            {
+
+                var userReturn = new UserAllQueryDTO()
+                {
+                    Identity = us.Identity,
+                    Name = us.Name,
+                    IdentityType = us.IdentityType,
+                    DateInscription = us.DateInscription.ToString(),
+                    DateExpired = us.DateInscription.AddDays(30).ToString()
+                };
+                var result = DateTime.Parse(userReturn.DateExpired) < DateTime.Now;
+                if (result)
+                {
+                    users.Add(userReturn);
+                }
+
+            });
+
+            return users;
+        }
     }
 }

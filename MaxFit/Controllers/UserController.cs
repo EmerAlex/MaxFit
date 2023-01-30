@@ -55,6 +55,13 @@ namespace MaxFit.Controllers
 
             return Json(new { data = _userService.FindAll().ToList() }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        [Authorize]
+        public JsonResult FindAllUsersExpired()
+        {
+
+            return Json(new { data = _userService.FindAllUsersExpired().ToList() }, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult LogOut()
         {

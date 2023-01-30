@@ -11,6 +11,7 @@ namespace MaxFit.Models.Service
         bool AddUser(UserSubmitDTO userdto);
         UserQueryDTO FindUser(string identity);
         IEnumerable<UserAllQueryDTO> FindAll();
+        IEnumerable<UserAllQueryDTO> FindAllUsersExpired();
         bool UpdateUser(UserSubmitDTO userdto);
     }
 }

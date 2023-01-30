@@ -48,6 +48,9 @@
                     <button class="btn btn-success btn-sm" onclick="ShowModal(0)">Nuevo Usuario</button>
                 </div>
                 <div style="display:inline-block">
+                    <button class="btn btn-primary btn-sm" onclick="SearchExpired()">Usuarios Vencidos</button>
+                </div>
+                <div style="display:inline-block">
                     <a class="btn btn-danger btn-sm" href="@Url.Action("Record","MaxFit")">Historial</a>
                 </div>
             </div>
@@ -203,6 +206,22 @@
                 })
 
 
+        }
+
+        function SearchExpired() {
+            jQuery.ajax({
+                url: "@Url.Action("FindAllUsersExpired", "User")",
+                type: "GET",
+                datatype: "json",
+                contentType: "application/json; charset-utf-8",
+                success: function (data) {
+                    console.log(data.data)
+                    table_user.clear();
+                    table_user.rows.add(data.data);
+                    table_user.draw();
+                }
+
+                })
         }
 
     </script>
