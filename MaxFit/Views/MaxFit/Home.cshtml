@@ -12,50 +12,57 @@
             <input type="text" name="Identity" class="form-control" style="width:50%" id="Identity">
         </div>
         <div class="form-group" id="divIdentityType">
-            <label class="form-label" style="width: 30%" ><b>Tipo de Identificación</b></label>           
-                <select class="form-select" name="IdentityType" style="width:50%" id="IdentityType">
-                    <option value="CC">Cédula de Ciudadania</option>
-                    <option value="TI">Targeta de Identidad</option>
-                </select>           
+            <label class="form-label" style="width: 30%"><b>Tipo de Identificación</b></label>
+            <select class="form-select" name="IdentityType" style="width:50%" id="IdentityType">
+                <option value="CC">Cédula de Ciudadania</option>
+                <option value="TI">Targeta de Identidad</option>
+            </select>
         </div>
         <div class="form-group" id="divName">
             <label class="form-label" style="width: 30%"><b>Nombre</b></label>
             <input type="text" name="Name" class="form-control" style="width:50%" id="Name">
         </div>
         <div class="form-group" id="divSubscription">
-            <label class="form-label" style="width: 30%"><b>Tipo de Usuario</b></label> 
-               <select class="form-select" name="Subscription" style="width:50%" id="Subscription">
-                    <option value="N">Nuevo</option>
-                    <option value="O">Antiguo</option>
-                </select>
-            
+            <label class="form-label" style="width: 30%"><b>Tipo de Usuario</b></label>
+            <select class="form-select" name="Subscription" style="width:50%" id="Subscription">
+                <option value="N">Nuevo</option>
+                <option value="O">Antiguo</option>
+                <option value="Q">Quincena</option>
+                <option value="D">Día</option>
+            </select>
         </div>
         <div class="align-middle" style="text-align:center">
-            <button type="button" class="btn btn-secondary" onclick="HideModal()">Close</button>
-            <button type="button" class="btn btn-primary" id="btnSave" onclick="SaveUser()" disabled>Guardar</button>
-            <button type="button" class="btn btn-primary" id="btnUpdate" onclick="UpdateUser()" disabled>Actualizar</button>
+            <button style="width:100px" type="button" class="btn btn-outline-danger btn-sm" onclick="HideModal()">Cancelar</button>
+            <button style="width:100px" type="button" class="btn btn-outline-success btn-sm" id="btnSave" onclick="SaveUser()" disabled>Guardar</button>
+            <button style="width:100px" type="button" class="btn btn-outline-success btn-sm" id="btnUpdate" onclick="UpdateUser()" disabled>Actualizar</button>
         </div>
     </div>
-    
-
 </form>
-
 <div class="row m-4">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header" style="text-align:center">
-                <div style="display:inline-block">
-                    <button class="btn btn-success btn-sm" onclick="ShowModal(0)">Nuevo Usuario</button>
+                <div style="display:inline-block; margin:10px 40px">
+                    <div style="margin:10px">
+                        <img src="~/Content/icons/user_icon.ico" class="img-fluid" alt="..." width="40" height="40">
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-success btn-sm" onclick="ShowModal(0)">Nuevo Usuario</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="SearchExpired()">Usuarios Vencidos</button>
+                        <a class="btn btn-outline-info btn-sm" href="@Url.Action("Record","MaxFit")">Historial Usuarios</a>
+                    </div>
                 </div>
-                <div style="display:inline-block">
-                    <button class="btn btn-primary btn-sm" onclick="SearchExpired()">Usuarios Vencidos</button>
-                </div>
-                <div style="display:inline-block">
-                    <a class="btn btn-danger btn-sm" href="@Url.Action("Record","MaxFit")">Historial</a>
+                <div style="display:inline-block ; margin:10px 40px">
+                    <div style="margin:10px">
+                        <img src="~/Content/icons/buy_icon.ico" class="img-fluid" alt="..." width="40" height="40">
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-success btn-sm" onclick="SellWather()">Vender Agua</button>
+                        <a class="btn btn-outline-info btn-sm" href="@Url.Action("Drink","MaxFit")">Historial Bebidas</a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
-
                 <table id="tbuser" class="table">
                     <thead>
                         <tr>
@@ -66,23 +73,18 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-
                 </table>
-
             </div>
         </div>
-
     </div>
-
 </div>
 
 
 
 @section scripts{
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         var table_user;
-
         $(document).ready(function () {
             $("#UserModal").hide();
             table_user = $('#tbuser').DataTable({
@@ -90,33 +92,25 @@
                     "url": "@Url.Action("FindAllUsers","User")",
                     "type": "GET",
                     "datatype": "json"
-
                 },
                 "columns": [
                     { "data": "Identity"},
                     { "data": "Name" },
                     { "data": "DateInscription" },
                     { "data": "DateExpired" },
-                    {
-                        "data": "Identity", "render": function (data) {
+                    { "data": "Identity", "render": function (data) {
 
-                            return "<button class='btn btn-primary' type='button' onclick='ShowModal(" + data +")'>Renovar<i class='fas fa-pen'></i></button>"
-
+                        return "<button style='margin: 5px' class='btn btn-outline-primary btn-sm' type='button' onclick='ShowModal(" + data + ")'>Renovar</button>" +
+                                "<button style='margin: 5px' class='btn btn-outline-danger btn-sm' type='button' onclick='DeleteUser(" + data + ")'>Eliminar</button>"
                         }
                     }
-
                 ]
-
-
                 });
         });
-
         function HideModal() {
             $("#UserModal").hide();
-
         }
         function ShowModal($Document) {
-
             if($Document == 0){
                 $("#Identity").prop('disabled',false);
                 $("#Identity").val('');
@@ -142,21 +136,15 @@
                 $("#btnUpdate").show();
                 $("#UserModal").show();
             }
-
         }
-
-
         function SaveUser() {
             var $data = {
                 userSubmit:{
-
                     Identity: $("#Identity").val(),
                     IdentityType: $("#IdentityType").val(),
                     Name: $("#Name").val(),
                     Subscription: $("#Subscription").val()
-
                 }
-
             }
             jQuery.ajax({
                 url: "@Url.Action("SaveUser","User")",
@@ -169,12 +157,14 @@
                         table_user.ajax.reload();
                         $("#UserModal").hide();
                     } else {
-                        alert("No se pudo guardar de forma correcta el usuario")
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo guardar el usuario de forma correcta',
+                            icon: 'error'
+                        });
                     }
                 }
-
                 })
-
         }
 
         function UpdateUser() {
@@ -183,13 +173,9 @@
 
                     Identity: $("#Identity").val(),
                     Subscription: $("#Subscription").val()
-
                 }
-
             }
-            console.log($data)
             jQuery.ajax({
-
                 url: "@Url.Action("UpdateUser","User")",
                 type: "POST",
                 data: JSON.stringify($data),
@@ -200,15 +186,50 @@
                         table_user.ajax.reload();
                         $("#UserModal").hide();
                     } else {
-                        alert("No se pudo guardar de forma correcta el usuario")
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo actualizar el usuario de forma correcta',
+                            icon: 'error'
+                        });
                     }
                 }
-
                 })
+        }
+        function DeleteUser($identity) {
+            Swal.fire({
+                title: 'Desea Eliminar el Usuario',
+                icon: 'question',
+                showCancelButton: true,
+                cancelButtonText:'Cancelar',
+                confirmButtonText: 'Confirmar'
+            }).then((response) => {
+                var $data = {
+                 userSubmit:{
+                        Identity: $identity
+                 }
+               }
+            jQuery.ajax({
+                url: "@Url.Action("DeleteUser", "User")",
+                type: "POST",
+                data: JSON.stringify($data),
+                datatype: "json",
+                contentType: "application/json; charset-utf-8",
+                success: function (data) {
+                    if (data.result) {
+                        table_user.ajax.reload();
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo eliminar el usuario de forma correcta',
+                            icon: 'error'
+                        });
+                    }
+                }
+            })
 
+            })
 
         }
-
         function SearchExpired() {
             jQuery.ajax({
                 url: "@Url.Action("FindAllUsersExpired", "User")",
@@ -216,17 +237,38 @@
                 datatype: "json",
                 contentType: "application/json; charset-utf-8",
                 success: function (data) {
-                    console.log(data.data)
                     table_user.clear();
                     table_user.rows.add(data.data);
                     table_user.draw();
                 }
-
-                })
+            })
         }
-
+        function SellWather() {
+            Swal.fire({
+                title: 'Confirmar Venta',
+                icon: 'question',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Vender'
+            }).then((response) => {
+                jQuery.ajax({
+                url: "@Url.Action("SaveDrink","Drink")",
+                type: "POST",
+                datatype: "json",
+                contentType: "application/json; charset-utf-8",
+                success: function (data) {
+                    if (!data.result) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo registrar la venta de forma correcta',
+                            icon: 'error'
+                        });
+                    }
+                }
+                })
+            })
+        }
     </script>
-
 }
 
 

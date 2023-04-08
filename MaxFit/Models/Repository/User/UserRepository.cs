@@ -40,6 +40,34 @@ namespace MaxFit.Models.Repository
             }
         }
 
+        public bool DeleteUser(User user)
+        {
+            var connection = new Conecction();
+
+            using (MySqlConnection conecctionSQL = new MySqlConnection(connection.getStringConexion()))
+            {
+
+                try
+                {
+
+
+                    conecctionSQL.Open();
+
+                    MySqlCommand commandSql = new MySqlCommand();
+                    commandSql.CommandText = "DELETE FROM`maxfit`.`users` WHERE (identity = ?identity)";
+                    commandSql.Parameters.Add("?identity", MySqlDbType.VarChar).Value = user.Identity;
+                    commandSql.Connection = conecctionSQL;
+                    commandSql.ExecuteNonQuery();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+        }
         public bool ExistUser(string identity)
         {
             var connection = new Conecction();

@@ -3,10 +3,6 @@ using MaxFit.Models.Repository.Record;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MaxFit.Models.Service.Record
 {
@@ -28,10 +24,20 @@ namespace MaxFit.Models.Service.Record
 
         public IEnumerable<RecordAllQuery> FindRecords(string initialDate, string finalDate)
         {
-       
-            var dateInitial = DateTime.Parse(initialDate);
-            var dateFinal = DateTime.Parse(finalDate);
-            
+
+            var dateInitial = new DateTime();
+            var dateFinal = new DateTime();
+            if (initialDate == null || finalDate == null)
+            {
+                dateInitial = DateTime.Now;
+                dateFinal = DateTime.Now;
+            }
+            else
+            {
+                dateInitial = DateTime.Parse(initialDate);
+                dateFinal = DateTime.Parse(finalDate);
+            }
+
             List<RecordAllQuery> records = new List<RecordAllQuery>();
             _RecordRepository.FindRecords(dateInitial, dateFinal).ForEach(rcd => {
                 records.Add(new RecordAllQuery()

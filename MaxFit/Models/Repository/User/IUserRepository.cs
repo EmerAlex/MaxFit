@@ -11,8 +11,10 @@ namespace MaxFit.Models.Repository
         bool AddUser(User user);
         User FindUser(string identity);
         bool ExistUser(string identity);
+        bool DeleteUser(User user);
         IEnumerable<User> FindAll();
         bool UpdateUser(User user);
+        
 
     }
 }

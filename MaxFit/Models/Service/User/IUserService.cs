@@ -9,6 +9,7 @@ namespace MaxFit.Models.Service
     interface IUserService
     {
         bool AddUser(UserSubmitDTO userdto);
+        bool DeleteUser(UserSubmitDTO userdto);
         UserQueryDTO FindUser(string identity);
         IEnumerable<UserAllQueryDTO> FindAll();
         IEnumerable<UserAllQueryDTO> FindAllUsersExpired();

@@ -8,21 +8,20 @@
     @Styles.Render("~/Content/Plugin/css")
     @Scripts.Render("~/bundles/modernizr")
     </head>
-    <body>
-        <div id="logout" style="text-align:end">
-            <a href="@Url.Action("logOut","User")">Cerrar Sesión</a>
-        </div>
-        <div class="text-center">
-            <img src="~/favicon.ico" class="img-fluid" alt="...">
-            <h1 id="title">Gestión de usuarios</h1>
-        </div>
-        <div class="container body-content">
-            @RenderBody()
-        </div>
-
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/Content/Plugin/js")
-        @RenderSection("scripts", required: false)
-    </body>
+<body>
+    <div id="logout" style="text-align:end; margin:20px">
+        <a class="btn btn-dark btn-sm" href="@Url.Action("logOut","User")">Cerrar Sesión</a>
+    </div>
+    <div class="text-center">
+        <img src="~/favicon.ico" class="img-fluid" alt="...">
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Content/Plugin/js")
+    @RenderSection("scripts", required: false)
+</body>
 </html>

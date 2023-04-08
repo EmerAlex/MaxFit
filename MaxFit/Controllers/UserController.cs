@@ -48,6 +48,13 @@ namespace MaxFit.Controllers
             return Json(new { result = _userService.UpdateUser(userSubmit) }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [Authorize]
+        public JsonResult DeleteUser(UserSubmitDTO userSubmit)
+        {
+            return Json(new { result = _userService.DeleteUser(userSubmit) }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         [Authorize]
         public JsonResult FindAllUsers()

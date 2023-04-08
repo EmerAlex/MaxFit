@@ -43,12 +43,6 @@ namespace MaxFit.Models.Service
 
 
         }
-
-        private int CalculatePrice(string subscription)
-        {
-            return (int)(subscription == "N" ? MaxFit.Models.Price.Price.nuevo : MaxFit.Models.Price.Price.viejo);
-        }
-
         public UserQueryDTO FindUser(string identity)
         {
             var user = _userRepository.FindUser(identity);
@@ -83,12 +77,13 @@ namespace MaxFit.Models.Service
 
         public bool UpdateUser(UserSubmitDTO userdto){
 
+            if (ValidateParamasUpdateUser(userdto)) return false;
+
             var user = new User();
 
             user.Identity = userdto.Identity;            
             user.Subscription = userdto.Subscription;
             user.DateInscription = DateTime.Now;
-            if (ValidateParamasUpdateUser(userdto)) return false;
             if (_userRepository.UpdateUser(user))
             {
                 var record = new Entities.Record();
@@ -100,16 +95,17 @@ namespace MaxFit.Models.Service
             }
             else { return false; }
         }
-
-        private bool ValidateParamasSaveUser(UserSubmitDTO userdto)
+        public bool DeleteUser(UserSubmitDTO userdto)
         {
-            return (userdto.Identity == null || userdto.IdentityType == null || userdto.Name == null || userdto.Subscription == null);
-        }
-        private bool ValidateParamasUpdateUser(UserSubmitDTO userdto)
-        {
-            return (userdto.Identity == null || userdto.Subscription == null);
-        }
 
+            if (ValidateParamasDeleteUser(userdto)) return false;
+
+            var user = new User();
+
+            user.Identity = userdto.Identity;
+
+            return _userRepository.DeleteUser(user);
+        }
         public IEnumerable<UserAllQueryDTO> FindAllUsersExpired()
         {
             List<UserAllQueryDTO> users = new List<UserAllQueryDTO>();
@@ -134,6 +130,38 @@ namespace MaxFit.Models.Service
             });
 
             return users;
+        }
+        private int CalculatePrice(string subscription)
+        {
+            if (subscription == "N")
+            {
+                return (int)MaxFit.Models.Price.Price.nuevo;
+            }
+            else if (subscription == "Q")
+            {
+                return (int)MaxFit.Models.Price.Price.quincenal;
+            }
+            else if (subscription == "D")
+            {
+                return (int)MaxFit.Models.Price.Price.dia;
+            }
+            else
+            {
+                return (int)MaxFit.Models.Price.Price.viejo;
+            }
+
+        }
+        private bool ValidateParamasSaveUser(UserSubmitDTO userdto)
+        {
+            return (userdto.Identity == null || userdto.IdentityType == null || userdto.Name == null || userdto.Subscription == null);
+        }
+        private bool ValidateParamasUpdateUser(UserSubmitDTO userdto)
+        {
+            return (userdto.Identity == null || userdto.Subscription == null);
+        }
+        private bool ValidateParamasDeleteUser(UserSubmitDTO userdto)
+        {
+            return (userdto.Identity == null);
         }
     }
 }

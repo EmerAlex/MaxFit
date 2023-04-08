@@ -8,8 +8,7 @@ namespace MaxFit.Controllers
     public class MaxFitController : Controller
     {
 
-        readonly UserService _userService = new UserService();
-
+       
     
         [HttpGet]
         [Authorize]
@@ -21,6 +20,13 @@ namespace MaxFit.Controllers
         [HttpGet]
         [Authorize]
         public ActionResult Record()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Drink()
         {
             return View();
         }
