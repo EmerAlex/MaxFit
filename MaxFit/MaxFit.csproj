@@ -159,6 +159,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DrinkController.cs" />
     <Compile Include="Controllers\RecordController.cs" />
     <Compile Include="Controllers\AccesController.cs" />
     <Compile Include="Controllers\MaxFitController.cs" />
@@ -166,23 +167,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Dto\RecordAllQuery.cs" />
-    <Compile Include="Models\Dto\RecordFindFilter.cs" />
-    <Compile Include="Models\Dto\UserAllQueryDTO.cs" />
-    <Compile Include="Models\Dto\UserQueryDTO.cs" />
-    <Compile Include="Models\Dto\RecordSearchDTO.cs" />
-    <Compile Include="Models\Dto\UserSearchDTO.cs" />
-    <Compile Include="Models\Dto\UserSubmitDTO.cs" />
+    <Compile Include="Models\Dto\Drink\DrinkAllQuery.cs" />
+    <Compile Include="Models\Dto\Drink\DrinkFindFilter.cs" />
+    <Compile Include="Models\Dto\Drink\DrinkSearchDTO.cs" />
+    <Compile Include="Models\Dto\Record\RecordAllQuery.cs" />
+    <Compile Include="Models\Dto\Record\RecordFindFilter.cs" />
+    <Compile Include="Models\Dto\User\UserAllQueryDTO.cs" />
+    <Compile Include="Models\Dto\User\UserQueryDTO.cs" />
+    <Compile Include="Models\Dto\Record\RecordSearchDTO.cs" />
+    <Compile Include="Models\Dto\User\UserSearchDTO.cs" />
+    <Compile Include="Models\Dto\User\UserSubmitDTO.cs" />
+    <Compile Include="Models\Entities\Drink.cs" />
     <Compile Include="Models\Entities\Record.cs" />
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Login\UserLogin.cs" />
     <Compile Include="Models\Login\UserLoginRepository.cs" />
     <Compile Include="Models\Price\PriceEnum.cs" />
     <Compile Include="Models\Repository\Conecction.cs" />
+    <Compile Include="Models\Repository\Drink\DrinkRepository.cs" />
+    <Compile Include="Models\Repository\Drink\IDrinkRepository.cs" />
     <Compile Include="Models\Repository\Record\IRecordRepository.cs" />
     <Compile Include="Models\Repository\Record\RecordRepository.cs" />
     <Compile Include="Models\Repository\User\IUserRepository.cs" />
     <Compile Include="Models\Repository\User\UserRepository.cs" />
+    <Compile Include="Models\Service\Drink\DrinkService.cs" />
+    <Compile Include="Models\Service\Drink\IDrinkService.cs" />
     <Compile Include="Models\Service\Record\IRecordService.cs" />
     <Compile Include="Models\Service\Record\RecordService.cs" />
     <Compile Include="Models\Service\User\IUserService.cs" />
@@ -212,6 +221,8 @@
     <Content Include="Content\datatable\images\sort_desc_disabled.png" />
     <Content Include="Content\datatable\js\buttons.dataTables.min.js" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\icons\buy_icon.ico" />
+    <Content Include="Content\icons\user_icon.ico" />
     <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
@@ -435,6 +446,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\MaxFit\Record.cshtml" />
+    <Content Include="Views\MaxFit\Drink.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
